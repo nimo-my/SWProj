@@ -102,6 +102,33 @@ public class Book {
 
 	}
 	
+	// search_bs(int id)
+	// DB에서 id로 도서를 binary search로 검색하는 함수.
+	// RETURN : 도서를 정상적으로 검색하면 0 return, 도서가 없어서 검색하지 못하면 1을 반환
+	public int search_bs(int id){
+		int left = 0;
+		int right = bookDB.size() - 1;
+
+		while (left <= right)
+		{
+			int middle = left + (right - left) / 2;
+
+			if (bookDB.get(middle).id == id)
+			{
+				System.out.println("검색 결과: ");
+				System.out.println("Book2{id : '" + bookDB.get(middle).id +  "', title : '" + bookDB.get(middle).title + "', author : '" + bookDB.get(middle).author + "', published Year : " + bookDB.get(middle).publishedYear + "}");
+				return 0;
+			}
+			if (bookDB.get(middle).id < id)
+				left = middle + 1;
+			else
+				right = middle - 1;
+		}
+
+		System.out.println("검색된 책이 없습니다.");
+		return (-1);
+	}
+	
 //	// test case code
 //	public static void main(String[] args)
 //	{
@@ -135,6 +162,20 @@ public class Book {
 //	new_book.testRemoveBook(1, "자바 기초", "Jane", 2021);
 //	new_book.testRemoveBook(1, "자바 기초", "Jane", 2021);
 //	
+//  // binary search searching test case
+//	new_book.testAddBook(1, "a", "Tom", 2014);
+//	new_book.testAddBook(2, "b", "Kate", 2014);
+//	new_book.testAddBook(3, "c", "Yoon", 2024);
+//	new_book.testAddBook(5, "d", "Dan", 2014);
+//	new_book.testAddBook(10, "e", "Yoon", 2024);
+//	new_book.testAddBook(8, "f", "Max", 2014);
+//	new_book.testAddBook(7, "g", "Jack", 2024);
+//
+//	System.out.println("<도서 검색>");
+//	new_book.testSearchBook(5, "d", "Dan", 2014);
+//
+//	System.out.println("<이진 검색>");
+//	new_book.search_bs(5);
 //	}
 
 }
