@@ -28,9 +28,9 @@ pipeline{
 				}
 
 				// windows code here
-
+				echo "Build finished!!! :D"
 				}
-			echo "Build finished!!! :D"
+			
 			}
 		}
 
@@ -46,12 +46,12 @@ pipeline{
 				sh 'cat junit_test_results.txt'
 
 				// windows code here
-
+				echo "Test01 finished!!! :D"
 				} 
 
 				
 
-				echo "Test01 finished!!! :D"
+				
 			}
 		}
 
