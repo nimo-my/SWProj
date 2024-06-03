@@ -58,25 +58,27 @@ pipeline{
 
 		stage('Test02 - Performance Test (in main function)') { 
 			steps {
-				// script{
+				script{
 				
 				// // mac code here
 
 				// // windows code here
 				
-				// }
 				echo "Test02 finished!!! :D"
+				}
 			}
 		}
-	}
+	
+
 	post {
 		always{
 			archiveArtifacts 'test_results.txt'
 		// success {
 		// echo 'Build and test succeeded'
 		// } 
-	}
+		}
 		
+	}
 }
 
 
