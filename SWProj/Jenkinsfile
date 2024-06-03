@@ -37,6 +37,10 @@ pipeline{
 			steps {
 				
 				// mac code here
+				script{
+				 sh 'mkdir -p classes'
+				 sh 'javac -encoding UTF-8 -d classes /var/lib/jenkins/workspace/SWProj/src/Book.java'
+				}
 
 				// windows code here
 
@@ -50,8 +54,13 @@ pipeline{
 			steps {
 				script{
 
-				
 				// mac code here
+				script{
+				// JUnit 5 테스트 실행을 위한 classpath 설정
+				def classpath = "java -jar /var/lib/jenkins/workspace/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
+				sh 'java -cp classes:/var/lib/jenkins/workspace/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path > junit_test_results.txt'
+				sh 'cat junit_test_results.txt'
+				} 
 
 				// windows code here
 
