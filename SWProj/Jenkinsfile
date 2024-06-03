@@ -1,12 +1,14 @@
 
 pipeline{
 	agent any
+	 parameters { 
+        string(defaultValue: "https://github.com/nimo-my/SWProj.git", description: 'project github url', name: 'URL')
+    }
 	stages {
 
 		stage('Git clone') {
             steps() {
-                git branch: 'main'
-				url: 'https://github.com/nimo-my/SWProj.git'
+				git branch: 'master', url: "${params.URL}"
             }
         }
 
