@@ -35,7 +35,7 @@ pipeline{
 		}
 
 
-		stage('Test01 - BookTest (JUnit test)') { 
+		stage('Test01') { 
 			steps {
 				script{
 
@@ -55,7 +55,7 @@ pipeline{
 			}
 		}
 
-		stage('Test02 - Performance Test (in main function)') { 
+		stage('Test02') { 
 			steps {
 				// script{
 				
