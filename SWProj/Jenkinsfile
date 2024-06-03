@@ -26,18 +26,19 @@ pipeline{
 
 		stage('Build') { 
 			steps {
-				// mac code here
 				script{
-				 sh 'mkdir -p classes'
-				 sh 'javac -encoding UTF-8 -d classes /var/lib/jenkins/workspace/SWProj/src/Book.java'
+					// mac code here
+					sh 'mkdir -p classes'
+					sh 'javac -encoding UTF-8 -d classes /var/lib/jenkins/workspace/SWProj/src/Book.java'
+
+					// windows code here
+					echo "Build finished!!! :D"
 				}
 
-				// windows code here
-				echo "Build finished!!! :D"
-				}
-			
 			}
+			
 		}
+		
 
 		stage('Test01 - BookTest (JUnit test)') { 
 			steps {
@@ -68,7 +69,7 @@ pipeline{
 				}
 			}
 		}
-	
+	}
 
 	post {
 		always{
@@ -79,6 +80,7 @@ pipeline{
 		}
 		
 	}
+
 }
 
 
