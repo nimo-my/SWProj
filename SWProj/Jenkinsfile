@@ -1,14 +1,19 @@
 
 pipeline{
 	agent any
-	 parameters { 
-        string(defaultValue: "https://github.com/nimo-my/SWProj.git", description: 'project github url', name: 'URL')
-    }
+
 	stages {
 
 		stage('Git clone') {
             steps() {
-				git branch: 'master', url: "${params.URL}"
+				// The below will clone your repo and will be checked out to master branch by default.
+				git credentialsId: 'nimo-my', url: 'https://github.com/nimo-my/SWProj.git'
+				// Do a ls -lart to view all the files are cloned. It will be clonned. This is just for you to be sure about it.
+				sh "ls -lart ./*" 
+				// List all branches in your repo. 
+				sh "git branch -a"
+				// Checkout to a specific branch in your repo.
+				// sh "git checkout branchname"
             }
         }
 
@@ -35,7 +40,7 @@ pipeline{
 		}
 
 
-		stage('Test01') { 
+		stage('Test01 - BookTest (JUnit test)') { 
 			steps {
 				script{
 
@@ -55,7 +60,7 @@ pipeline{
 			}
 		}
 
-		stage('Test02') { 
+		stage('Test02 - Performance Test (in main function)') { 
 			steps {
 				// script{
 				
