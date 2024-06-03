@@ -18,14 +18,14 @@ pipeline{
         }
 
 		stage('Checkout') {
-			steps {
+			steps() {
 			// 소스코드 체크아웃 
 			checkout scm
 			} 
 		}
 
 		stage('Build') { 
-			steps {
+			steps() {
 				// mac code here
 				script{
 				 sh 'mkdir -p classes'
@@ -39,9 +39,8 @@ pipeline{
 			}
 		}
 
-
 		stage('Test01 - BookTest (JUnit test)') { 
-			steps {
+			steps() {
 				script{
 
 				// mac code here
@@ -54,14 +53,11 @@ pipeline{
 				echo "Test01 finished!!! :D"
 				} 
 
-				
-
-				
 			}
 		}
 
 		stage('Test02 - Performance Test (in main function)') { 
-			steps {
+			steps() {
 				// script{
 				
 				// // mac code here
