@@ -1,40 +1,25 @@
 
+
 pipeline{
 	agent any
 
 	stages {
 
-		// stage('Git clone') {
-        //     steps {
-		// 		script{
-		// 		// The below will clone your repo and will be checked out to master branch by default.
-		// 		// git credentialsId: 'nimo-my', url: 'https://github.com/nimo-my/SWProj.git'
-		// 		// Do a ls -lart to view all the files are cloned. It will be clonned. This is just for you to be sure about it.
-		// 		sh "ls -lart ./*" 
-		// 		// List all branches in your repo. 
-		// 		sh "git branch -a"
-		// 		// Checkout to a specific branch in your repo.
-		// 		sh "git checkout mac_jenkins"
-		// 		}
-        //     }
-        // }
+		stage('Checkout') {
+			steps {
+			// 소스코드 체크아웃 
+			checkout scm
+			} 
+		}
 
-		// stage('Checkout') {
-		// 	steps {
-		// 	// 소스코드 체크아웃 
-		// 	checkout scm
-		// 	} 
-		// }
-
-		stage('Build') { 
+		stage('Pre-Build') { 
 			steps {
 				script{
-					// mac code here
+					// make Book class into classes folder (in workspace)
 					sh 'mkdir -p classes'
-					sh 'javac -encoding UTF-8 -d classes /Users/nimo/Desktop/SWProj/src/Book.java'
+					sh 'javac -encoding UTF-8 -d classes Practice/src/Book.java'
 
-					// windows code here
-					echo "Build finished!!! :D"
+					echo "Pre-Build finished!!! :D"
 				}
 
 			}
@@ -42,43 +27,54 @@ pipeline{
 		}
 		
 
-		stage('Test01 - BookTest (JUnit test)') { 
+		stage('Build') { 
 			steps {
 				script{
 
 				// mac code here
 				// JUnit 5 테스트 실행을 위한 classpath 설정
-				def classpath = "java -jar /Users/nimo/Desktop/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
-				sh 'java -cp classes:/Users/nimo/Desktop/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path > junit_test_results.txt'
-				sh 'cat junit_test_results.txt'
-
-				// windows code here
-				echo "Test01 finished!!! :D"
+				def classpath = "java -jar Practice/.settings/junit-platform-console-standalone-1.7.1.jar"
+				sh 'java -cp classes:Practice/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
+				sh 'pwd'
+				
 				} 
-
-			}
-		}
-
-		stage('Test02 - Performance Test (in main function)') { 
-			steps {
-				script{
-				
-				// // mac code here
-
-				// // windows code here
-				
-				echo "Test02 finished!!! :D"
+				dir ("Practice/src") {
+					sh 'javac PerformanceTest.java'
 				}
+
+				echo "Build finished!!! :D"
+
 			}
 		}
+
+		stage('Test') { 
+			steps {
+				// script{
+
+				// // mac code here
+				// // JUnit 5 테스트 실행을 위한 classpath 설정
+				// def classpath = "java -jar /Users/nimo/Desktop/jenkinsPractice/Practice/.settings/junit-platform-console-standalone-1.7.1.jar"
+				// sh 'java -cp classes:/Users/nimo/Desktop/jenkinsPractice/Practice/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
+				// sh 'pwd'
+				
+				// } 
+				dir ("Practice/src") {
+					sh 'java PerformanceTest > junit_test_results.txt'
+				}
+
+				echo "Test finished!!! :D"
+
+			}
+		}
+
 	}
 
 	post {
 		always{
-			archiveArtifacts 'test_results.txt'
-		// success {
-		// echo 'Build and test succeeded'
-		// } 
+			dir ("Practice/src") {
+				archiveArtifacts 'junit_test_results.txt'
+			}
+
 		}
 		
 	}
