@@ -17,7 +17,7 @@ pipeline{
 				script{
 					// make Book class into classes folder (in workspace)
 					sh 'mkdir -p classes'
-					sh 'javac -encoding UTF-8 -d classes Practice/src/Book.java'
+					sh 'javac -encoding UTF-8 -d classes SWProj/src/Book.java'
 
 					echo "Pre-Build finished!!! :D"
 				}
@@ -33,12 +33,12 @@ pipeline{
 
 				// mac code here
 				// JUnit 5 테스트 실행을 위한 classpath 설정
-				def classpath = "java -jar Practice/.settings/junit-platform-console-standalone-1.7.1.jar"
-				sh 'java -cp classes:Practice/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
+				def classpath = "java -jar SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
+				sh 'java -cp classes:SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
 				sh 'pwd'
 				
 				} 
-				dir ("Practice/src") {
+				dir ("SWProj/src") {
 					sh 'javac PerformanceTest.java'
 				}
 
@@ -53,12 +53,12 @@ pipeline{
 
 				// // mac code here
 				// // JUnit 5 테스트 실행을 위한 classpath 설정
-				// def classpath = "java -jar /Users/nimo/Desktop/jenkinsPractice/Practice/.settings/junit-platform-console-standalone-1.7.1.jar"
-				// sh 'java -cp classes:/Users/nimo/Desktop/jenkinsPractice/Practice/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
+				// def classpath = "java -jar /Users/nimo/Desktop/jenkinsSWProj/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
+				// sh 'java -cp classes:/Users/nimo/Desktop/jenkinsSWProj/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
 				// sh 'pwd'
 				
 				// } 
-				dir ("Practice/src") {
+				dir ("SWProj/src") {
 					sh 'java PerformanceTest > junit_test_results.txt'
 				}
 
@@ -71,7 +71,7 @@ pipeline{
 
 	post {
 		always{
-			dir ("Practice/src") {
+			dir ("SWProj/src") {
 				archiveArtifacts 'junit_test_results.txt'
 			}
 
