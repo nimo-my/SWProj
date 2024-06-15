@@ -1,5 +1,6 @@
 import java.util.Random;
 
+// PerformanceTest
 public class PerformanceTest {
 
     Book test_Book;
@@ -53,5 +54,12 @@ public class PerformanceTest {
         System.out.println("testSearchBook 함수와 search_bs 함수의 실행 시간 비교");
         System.out.println("testSearchBook 실행 시간: " + durationTestSearchBook + " ms");
         System.out.println("search_bs 실행 시간: " + durationSearchBs + " ms");
+    }
+
+    public static void main(String[] args)
+    {
+        PerformanceTest perf = new PerformanceTest();
+
+        perf.runTest();
     }
 }
