@@ -26,7 +26,7 @@ pipeline{
 					// Window Code here
 
 					def encoding = 'UTF-8'
-					bat 'mkdir newClasses01'
+					bat 'mkdir classes'
                     bat 'javac -encoding UTF-8 -d classes SWProj\\src\\Book.java'
 
                     echo "Pre-Build finished!!! :D"
@@ -62,7 +62,7 @@ pipeline{
 				
 
 				 	def classpath = "java -jar SWProj\\.settings\\junit-platform-console-standalone-1.7.1.jar"
-                    bat "java -cp classes:SWproj\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
+                    bat "java -cp classes;SWproj\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
                     bat 'cd'
                 }
                 dir ("SWproj\\src") {
