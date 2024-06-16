@@ -22,6 +22,8 @@ pipeline{
 
 					// echo "Pre-Build finished!!! :D"
 
+					// 
+
 					bat 'mkdir classes'
                     bat 'javac -encoding UTF-8 -d classes SWProj\\src\\Book.java'
 
@@ -49,6 +51,10 @@ pipeline{
 
 				// echo "Build finished!!! :D"
 
+
+				// Window code here
+				// JUnit 5 테스트 실행을 위한 classpath 설정
+
 				 def classpath = "java -jar SWProj\\.settings\\junit-platform-console-standalone-1.7.1.jar"
                     bat "java -cp classes;SWproj\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
                     bat 'cd'
@@ -68,7 +74,7 @@ pipeline{
 				// script{
 
 				// // mac code here
-				// // JUnit 5 테스트 실행을 위한 classpath 설정
+				// 
 				// def classpath = "java -jar /Users/nimo/Desktop/jenkinsSWProj/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
 				// sh 'java -cp classes:/Users/nimo/Desktop/jenkinsSWProj/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
 				// sh 'pwd'
@@ -79,6 +85,10 @@ pipeline{
 				// }
 
 				// echo "Test finished!!! :D"
+
+
+				// Window code here
+				// JUnit 5 테스트 실행을 위한 classpath 설정
 
 				dir ("SWProj\\src") {
                     bat 'java PerformanceTest > junit_test_results.txt'
