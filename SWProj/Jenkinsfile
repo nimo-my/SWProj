@@ -64,7 +64,7 @@ pipeline{
                     bat 'cd'
                 }
                 dir ("SWproj\\src") {
-                    bat 'javac PerformanceTest.java'
+                     bat "javac -encoding ${encoding} PerformanceTest.java"
                 }
 
                 echo "Build finished!!! :D"
