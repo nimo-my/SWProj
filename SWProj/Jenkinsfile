@@ -23,7 +23,7 @@ pipeline{
 					// echo "Pre-Build finished!!! :D"
 
 					bat 'mkdir classes'
-                    bat 'javac -encoding UTF-8 -d classes Practice\\src\\Book.java'
+                    bat 'javac -encoding UTF-8 -d classes SWProj\\src\\Book.java'
 
                     echo "Pre-Build finished!!! :D"
 				}
@@ -49,11 +49,11 @@ pipeline{
 
 				// echo "Build finished!!! :D"
 
-				 def classpath = "java -jar Practice\\.settings\\junit-platform-console-standalone-1.7.1.jar"
-                    bat "java -cp classes;Practice\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
+				 def classpath = "java -jar SWProj\\.settings\\junit-platform-console-standalone-1.7.1.jar"
+                    bat "java -cp classes;SWproj\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
                     bat 'cd'
                 }
-                dir ("Practice\\src") {
+                dir ("SWproj\\src") {
                     bat 'javac PerformanceTest.java'
                 }
 
@@ -80,7 +80,7 @@ pipeline{
 
 				// echo "Test finished!!! :D"
 
-				dir ("Practice\\src") {
+				dir ("SWProj\\src") {
                     bat 'java PerformanceTest > junit_test_results.txt'
                 }
 
@@ -93,7 +93,7 @@ pipeline{
 
 	post {
 		always{
-			dir ("Practice\\src") {
+			dir ("SWProj\\src") {
 				archiveArtifacts 'junit_test_results.txt'
 			}
 
