@@ -61,10 +61,9 @@ pipeline{
 
 				 	def classpath = "java -jar SWProj\\.settings\\junit-platform-console-standalone-1.7.1.jar"
                     bat "java -cp classes;SWproj\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
-                    bat 'cd'
                 }
-                dir ("SWproj\\src") {
-                     bat "javac -encoding ${encoding} PerformanceTest.java"
+                dir("SWProj\\src") {
+                    bat "javac -encoding ${encoding} PerformanceTest.java"
                 }
 
                 echo "Build finished!!! :D"
