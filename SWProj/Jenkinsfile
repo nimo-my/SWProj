@@ -41,6 +41,8 @@ pipeline{
 			steps {
 				script{
 
+					def encoding = 'UTF-8'
+
 				// mac code here
 				// JUnit 5 테스트 실행을 위한 classpath 설정
 				// def classpath = "java -jar SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
@@ -57,7 +59,9 @@ pipeline{
 				// Window code here
 				// JUnit 5 테스트 실행을 위한 classpath 설정
 
-				 def classpath = "java -jar SWProj\\.settings\\junit-platform-console-standalone-1.7.1.jar"
+				
+
+				 	def classpath = "java -jar SWProj\\.settings\\junit-platform-console-standalone-1.7.1.jar"
                     bat "java -cp classes;SWproj\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
                     bat 'cd'
                 }
@@ -91,6 +95,8 @@ pipeline{
 
 				// Window code here
 				// JUnit 5 테스트 실행을 위한 classpath 설정
+
+				def encoding = 'UTF-8'
 
 				dir ("SWProj\\src") {
                     bat 'java PerformanceTest > junit_test_results.txt'
