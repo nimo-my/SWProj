@@ -22,7 +22,9 @@ pipeline{
 
 					// echo "Pre-Build finished!!! :D"
 
-					// 
+					// Window Code here
+
+					def encoding = 'UTF-8'
 
 					bat 'mkdir classes'
                     bat 'javac -encoding UTF-8 -d classes SWProj\\src\\Book.java'
