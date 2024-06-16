@@ -1,14 +1,9 @@
 
+
 pipeline{
 	agent any
-	stages {
 
-		stage('Git clone') {
-            steps() {
-                git branch: 'main'
-				url: 'https://github.com/nimo-my/SWProj.git'
-            }
-        }
+	stages {
 
 		stage('Checkout') {
 			steps {
@@ -17,54 +12,72 @@ pipeline{
 			} 
 		}
 
+		stage('Pre-Build') { 
+			steps {
+				script{
+					// make Book class into classes folder (in workspace)
+					sh 'mkdir -p classes'
+					sh 'javac -encoding UTF-8 -d classes SWProj/src/Book.java'
+
+					echo "Pre-Build finished!!! :D"
+				}
+
+			}
+			
+		}
+		
+
 		stage('Build') { 
 			steps {
-				
-				// mac code here
-
-				// windows code here
-
-				}
-			echo "Build finished!!! :D"
-			}
-		}
-
-
-		stage('Test01 - BookTest (JUnit test)') { 
-			steps {
 				script{
 
-				
 				// mac code here
-
-				// windows code here
-
+				// JUnit 5 테스트 실행을 위한 classpath 설정
+				def classpath = "java -jar SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
+				sh 'java -cp classes:SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
+				
 				} 
-				echo "Test01 finished!!! :D"
-			}
-		}
-
-		stage('Test02 - Performance Test (in main function)') { 
-			steps {
-				script{
-				
-				// mac code here
-
-				// windows code here
-				
+				dir ("SWProj/src") {
+					sh 'javac PerformanceTest.java'
 				}
-				echo "Test02 finished!!! :D"
+
+				echo "Build finished!!! :D"
+
 			}
 		}
+
+		stage('Test') { 
+			steps {
+				// script{
+
+				// // mac code here
+				// // JUnit 5 테스트 실행을 위한 classpath 설정
+				// def classpath = "java -jar /Users/nimo/Desktop/jenkinsSWProj/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
+				// sh 'java -cp classes:/Users/nimo/Desktop/jenkinsSWProj/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
+				// sh 'pwd'
+				
+				// } 
+				dir ("SWProj/src") {
+					sh 'java PerformanceTest > junit_test_results.txt'
+				}
+
+				echo "Test finished!!! :D"
+
+			}
+		}
+
 	}
+
 	post {
 		always{
-			archiveArtifacts 'test_results.txt'
-		// success {
-		// echo 'Build and test succeeded'
-		// } 
-	}
+			dir ("SWProj/src") {
+				archiveArtifacts 'junit_test_results.txt'
+			}
+
+		}
 		
+	}
+
 }
 
 
