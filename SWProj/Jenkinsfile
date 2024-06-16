@@ -63,7 +63,7 @@ pipeline{
                     bat "java -cp classes;SWproj\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
                 }
                 dir("SWProj\\src") {
-                    bat "javac -encoding ${encoding} PerformanceTest.java"
+                    bat "javac -encoding UTF-8 PerformanceTest.java"
                 }
 
                 echo "Build finished!!! :D"
