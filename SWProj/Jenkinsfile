@@ -15,11 +15,17 @@ pipeline{
 		stage('Pre-Build') { 
 			steps {
 				script{
+					// Mac OS
 					// make Book class into classes folder (in workspace)
-					sh 'mkdir -p classes'
-					sh 'javac -encoding UTF-8 -d classes SWProj/src/Book.java'
+					// sh 'mkdir -p classes'
+					// sh 'javac -encoding UTF-8 -d classes SWProj/src/Book.java'
 
-					echo "Pre-Build finished!!! :D"
+					// echo "Pre-Build finished!!! :D"
+
+					bat 'mkdir classes'
+                    bat 'javac -encoding UTF-8 -d classes Practice\\src\\Book.java'
+
+                    echo "Pre-Build finished!!! :D"
 				}
 
 			}
@@ -33,15 +39,26 @@ pipeline{
 
 				// mac code here
 				// JUnit 5 테스트 실행을 위한 classpath 설정
-				def classpath = "java -jar SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
-				sh 'java -cp classes:SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
+				// def classpath = "java -jar SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
+				// sh 'java -cp classes:SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
 				
-				} 
-				dir ("SWProj/src") {
-					sh 'javac PerformanceTest.java'
-				}
+				// } 
+				// dir ("SWProj/src") {
+				// 	sh 'javac PerformanceTest.java'
+				// }
 
-				echo "Build finished!!! :D"
+				// echo "Build finished!!! :D"
+
+				 def classpath = "java -jar Practice\\.settings\\junit-platform-console-standalone-1.7.1.jar"
+                    bat "java -cp classes;Practice\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
+                    bat 'cd'
+                }
+                dir ("Practice\\src") {
+                    bat 'javac PerformanceTest.java'
+                }
+
+                echo "Build finished!!! :D"
+
 
 			}
 		}
@@ -57,11 +74,17 @@ pipeline{
 				// sh 'pwd'
 				
 				// } 
-				dir ("SWProj/src") {
-					sh 'java PerformanceTest > junit_test_results.txt'
-				}
+				// dir ("SWProj/src") {
+				// 	sh 'java PerformanceTest > junit_test_results.txt'
+				// }
 
-				echo "Test finished!!! :D"
+				// echo "Test finished!!! :D"
+
+				dir ("Practice\\src") {
+                    bat 'java PerformanceTest > junit_test_results.txt'
+                }
+
+                echo "Test finished!!! :D"
 
 			}
 		}
@@ -70,7 +93,7 @@ pipeline{
 
 	post {
 		always{
-			dir ("SWProj/src") {
+			dir ("Practice\\src") {
 				archiveArtifacts 'junit_test_results.txt'
 			}
 
