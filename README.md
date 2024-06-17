@@ -37,12 +37,14 @@ Jenkins Pipeline의 정의를 포함하는 source control을 체크할 수 있�
 [동작]
 Jenkins와 연동하여 깃허브의 프로젝트를 클론하여 받아와 테스트를 실행하고, 해당 프로젝트의 실행파일을 .txt 파일로 출력합니다.
 
-pipeline의 stage는 (1) Checkout (2) Pre-Build (3) Build (4) Test 로 구성되어 있습니다. 해당 테스트의 결과 출력은 junit_test_results.txt 파일을 통해 확인하실 수도 있고,
+pipeline의 stage는 (1) Checkout (2) Pre-Build (3) Build (4) Test 로 구성되어 있습니다. \
+해당 테스트의 결과 출력은 junit_test_results.txt 파일을 통해 확인하실 수도 있고, \
 archiveArtifacts로 설정해 놓아서 jenkins 상에서도 확인 가능합니다.
 
 - Pre-build: PrerformanceTest.java 에서 사용될 Book 클래스를 만듭니다.
 - 실제 build와 test는 각각 (3) 과 (4) 단계에서 일어납니다.
 
+<img width="910" alt="스크린샷 2024-06-15 오후 12 44 28" src="https://github.com/nimo-my/SWProj/assets/67938113/628dc2eb-3d2b-4648-92d5-4ba5d32e4569">
 
 
 ### Error Log :
@@ -57,25 +59,21 @@ archiveArtifacts로 설정해 놓아서 jenkins 상에서도 확인 가능합니
 #### [ MacOS Jenkins Error ] 
 - 자세한 설명은 'Pull request'의 Jenkinsfile 파트 (MacOS) 완료! #6 파트 참고
 
-1. jenkins workspace
-jenkins에서는 자체적으로 .jenkins 파일안의 workspace를 만들어서 해당 파일들을 빌드 & 컴파일을 하더라고요!
-그것도 모르고 계속해서 데스크톱에 있는 클론받은 파일을 통해서 빌드를 하려고 하니 계속해서 에러가 났던 것이었습니다..
-그래서 이를 'SWProj/src/Book.java' 식으로 모두 간단하게 바꿔주었습니다!
+1. jenkins workspace 경로 관련 에러:
+jenkins에서 자체적으로 .jenkins 파일안의 workspace를 만들어서 해당 파일들을 빌드하고 컴파일을 하는 것을 간과하고 계속해서 데스크톱에 있는 클론받은 파일을 통해서 빌드를 하려고 하니 계속해서 에러가 발 생했습니다. 그래서 ‘개인 데스크톱 안, 해당 파일을 클론한 파일의 절대 경로’를 'SWProj/src/Book.java' 식 의 상대경로로 모두 변경하여 문제를 해결하였습니다.
 
-2. 명령어 cd 역할을 하는 keyword (in jenkins) -> dir([경로])
-sh 'cd [경로]' 를 통해서 빌드와 컴파일을 하려 했는데, 왜인지 계속해서 pwd를 통해 현재 경로를 확인해봐도 계속해서 .jenkins/workspace/SWProj 에서 벗어나지 않았습니다. 검색해본 결과 jenkinsfile 안에서는
+2. jenkinsfile 안에서 cd 역할을 하는 키워드 관련 에러 - (solution) dir(){} 를 사용:
+sh 'cd [경로]' 를 통해서 빌드와 컴파일을 하려 했습니다만, pwd를 통해 현재 경로를 확인해봐도 계속해서 현재 위치가 .jenkins/workspace/SWProj 에서 벗어나지 않았습니다. 검색해본 결과 jenkinsfile 안에서는 명령어 cd와 같은 효과를 기대하기 위해서는 아래와 같이 dir 키워드를 사용한다고 합니다.
 ```
 dir([경로]){
-    [경로 안에서 실행해야 될 것]
+[경로 안에서 실행해야 될 것]
 }
 ```
-를 사용한다고 하더라고요! 그래서 해당 부분 또한 수정했습니다!
-dir([경로]){[경로 안에서 실행해야 될 것]} == 명령어 cd 라고 생각하면 편할 것 같아요.
-(이 또한 의도한 바대로 현재 정상작동 됨!)
+따라서 해당 경로 안에서 ‘{}’ 부분을 실행해야 한다는 식으로 이해하여 ‘dir’ 키워드를 이용하여 jenkinsfile 의 파이프라인을 작성해서 에러를 해결하였습니다.
 
-3. git reset 후 변경사항을 git에 커밋하고 푸시하기
-코드상 오류를 수정하고 있을 당시에, 파일들의 위치를 조정한 적이 있었는데 .project 와 jenkinsfile의 위치를 옮기다가 위치가 아예 꼬여버린 적이 있었습니다.. 그래서 github 안의 로그를 보면서 git reset 명령어를 이용하여 다행히 수정 이전으로 돌아갈 수 있었습니다. 이러한 상황이 언제 어떻게 있을 지 모르니, git commit 할 때에 메세지를 잘 작성해 놔야 될 것 같습니다! ![ --hard 와 -force는 남용하지 않도록 주의..!! 사실 이러한 경우 빼면 정말 쓰면 안된다. ]!
+3. git reset 후 변경사항을 git에 커밋 & 푸시 에러 :
+파일들의 위치를 조정한 적이 있었는데 .project 와 jenkinsfile의 위치를 옮기다가 위치가 아예 꼬여버린 적이 있었습니다. 해결 방안으로 github 안의 로그를 보면서 git reset 명령어를 이용하였는데, 다행히 수정 이전으로 돌아갈 수 있었습니다! 이러한 상황이 언제 어떻게 있을 지 모르니, git commit 할 때에 메세지 를 잘 작성해 놔야 될 것 같습니다. (--hard 와 -force는 남용하지 않도록 주의해야 할 것 같습니다. 정말 확신을 가지고 해당 커밋 주소로 반드시 돌아가야 하는 경우가 아니면 사용하면 x.)
 ```
 git reset --hard <full_hash_of_commit_to_reset_to>
-git push --force
+git push –force
 ```
