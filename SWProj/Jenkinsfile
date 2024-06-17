@@ -7,7 +7,7 @@ pipeline{
 
 		stage('Checkout') {
 			steps {
-			// 소스코드 체크아웃 
+			// source code checkout 
 			checkout scm
 			} 
 		}
@@ -15,11 +15,21 @@ pipeline{
 		stage('Pre-Build') { 
 			steps {
 				script{
+					// Mac OS
 					// make Book class into classes folder (in workspace)
-					sh 'mkdir -p classes'
-					sh 'javac -encoding UTF-8 -d classes SWProj/src/Book.java'
+					// sh 'mkdir -p classes'
+					// sh 'javac -encoding UTF-8 -d classes SWProj/src/Book.java'
 
-					echo "Pre-Build finished!!! :D"
+					// echo "Pre-Build finished!!! :D"
+
+
+					// Window Code here
+
+					def encoding = 'UTF-8'
+					bat 'if not exist classes mkdir classes'
+                    bat 'javac -encoding UTF-8 -d classes SWProj\\src\\Book.java'
+
+                    echo "Pre-Build finished!!! :D"
 				}
 
 			}
@@ -31,17 +41,33 @@ pipeline{
 			steps {
 				script{
 
-				// mac code here
-				// JUnit 5 테스트 실행을 위한 classpath 설정
-				def classpath = "java -jar SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
-				sh 'java -cp classes:SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
-				
-				} 
-				dir ("SWProj/src") {
-					sh 'javac PerformanceTest.java'
-				}
+					def encoding = 'UTF-8'
 
-				echo "Build finished!!! :D"
+				// mac code here
+				// setting classpath for executing JUnit 5 test
+				// def classpath = "java -jar SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
+				// sh 'java -cp classes:SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
+				
+				// } 
+				// dir ("SWProj/src") {
+				// 	sh 'javac PerformanceTest.java'
+				// }
+
+				// echo "Build finished!!! :D"
+
+
+				// Window code here
+				// setting classpath for executing JUnit 5 test				
+
+				 	def classpath = "java -jar SWProj\\.settings\\junit-platform-console-standalone-1.7.1.jar"
+                    bat "java -cp classes;SWproj\\.settings\\junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path"
+                }
+                dir("SWProj\\src") {
+                    bat "javac -encoding UTF-8 PerformanceTest.java"
+                }
+
+                echo "Build finished!!! :D"
+
 
 			}
 		}
@@ -51,18 +77,32 @@ pipeline{
 				// script{
 
 				// // mac code here
-				// // JUnit 5 테스트 실행을 위한 classpath 설정
+				// 
 				// def classpath = "java -jar /Users/nimo/Desktop/jenkinsSWProj/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar"
 				// sh 'java -cp classes:/Users/nimo/Desktop/jenkinsSWProj/SWProj/.settings/junit-platform-console-standalone-1.7.1.jar org.junit.platform.console.ConsoleLauncher --scan-class-path'
 				// sh 'pwd'
 				
 				// } 
-				dir ("SWProj/src") {
-					sh 'java PerformanceTest > junit_test_results.txt'
+				// dir ("SWProj/src") {
+				// 	sh 'java PerformanceTest > junit_test_results.txt'
+				// }
+
+				// echo "Test finished!!! :D"
+
+
+				// Window code here
+				// setting classpath for executing JUnit 5 test
+
+				script{
+					def encoding = 'UTF-8'
+
+				dir ("SWProj\\src") {
+                    bat 'java PerformanceTest > junit_test_results.txt'
+                }
+
+                echo "Test finished!!! :D"
+
 				}
-
-				echo "Test finished!!! :D"
-
 			}
 		}
 
@@ -70,7 +110,7 @@ pipeline{
 
 	post {
 		always{
-			dir ("SWProj/src") {
+			dir ("SWProj\\src") {
 				archiveArtifacts 'junit_test_results.txt'
 			}
 
