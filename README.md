@@ -1,37 +1,38 @@
 # SWProj
 2024-2 소프트웨어 공학 실습 과제
+
 [작성자] macOS: B840006 김지수, windowsOS: C012024 나정윤
 
-### git project 주소
+### git project 주소 :
 https://github.com/nimo-my/SWProj.git
 
 
 ### 역할 분담 :
-1. --- 김지수
-새로운 브랜치 생성 (search_revision) 
-ㄴ 새로운 함수 search_bs() 구현 
-ㄴ 단위테스트 (JUNIT테스트 완료) 
+1. --- 김지수\
+새로운 브랜치 생성 (search_revision) \
+ㄴ 새로운 함수 search_bs() 구현 \
+ㄴ 단위테스트 (JUNIT테스트 완료)\
 -> git merge + main 브랜치 병합 
 
-2. --- 나정윤
-performance_test 브랜치 생성
+2. --- 나정윤\
+performance_test 브랜치 생성\
 ㄴ search & search_bs 성능 테스트 가능한 코드를 구현 -> git merge + main 브랜치에 병합 
 
 3. 젠킨스 파이프라인 제작
 - Mac OS 버전 : 김지수
-- Windows OS 버전 : 나정윤
-젠킨스 CI/CD 과정 구축 (공동) -> 병합된 코드를 체크아웃 -> 빌드 -> 성능 테스트하는 스테이지 구현 + 구동 (표준 아웃풋으로 나오는 성능 테스트 결과를 정해진 폴더에 저장하도록 젠킨스 과정을 정의)
+- Windows OS 버전 : 나정윤\
+젠킨스 CI/CD 과정 구축 (공동) -> 병합된 코드를 체크아웃 -> 빌드 -> 성능 테스트하는 스테이지 구현 + 구동 \
+(표준 아웃풋으로 나오는 성능 테스트 결과를 정해진 폴더에 저장하도록 젠킨스 과정을 정의)
 
 
 ### Jenkinsfile :
 
 [설명]
-A text file that contains the definition of a \
-Jenkins Pipeline and is checked into source control.\
-Jenkins Pipeline의 정의를 포함하는 source control을 \
-체크할 수 있도록 만들어진 텍스트 파일입니다.
+A text file that contains the definition of a Jenkins Pipeline and is checked into source control.\
+Jenkins Pipeline의 정의를 포함하는 source control을 체크할 수 있도록 만들어진 텍스트 파일입니다.
 
-[단계] (1) Checkout (2) Pre-Build (3) Build (4) Test
+[단계] 
+(1) Checkout (2) Pre-Build (3) Build (4) Test
 
 [동작]
 Jenkins와 연동하여 깃허브의 프로젝트를 클론하여 받아와 테스트를 실행하고, 해당 프로젝트의 실행파일을 .txt 파일로 출력합니다.
@@ -73,4 +74,8 @@ dir([경로]){[경로 안에서 실행해야 될 것]} == 명령어 cd 라고 �
 (이 또한 의도한 바대로 현재 정상작동 됨!)
 
 3. git reset 후 변경사항을 git에 커밋하고 푸시하기
-코드상 오류를 수정하고 있을 당시에, 파일들의 위치를 조정한 적이 있었는데 .project 와 jenkinsfile의 위치를 옮기다가 위치가 아예 꼬여버린 적이 있었습니다.. 그래서 github 안의 로그를 보면서 git reset 명령어를 이용하여 다행히 수정 이전으로 돌아갈 수 있었습니다. 이러한 상황이 언제 어떻게 있을 지 모르니, git commit 할 때에 메세지를 잘 작성해 놔야 될 것 같습니다!
+코드상 오류를 수정하고 있을 당시에, 파일들의 위치를 조정한 적이 있었는데 .project 와 jenkinsfile의 위치를 옮기다가 위치가 아예 꼬여버린 적이 있었습니다.. 그래서 github 안의 로그를 보면서 git reset 명령어를 이용하여 다행히 수정 이전으로 돌아갈 수 있었습니다. 이러한 상황이 언제 어떻게 있을 지 모르니, git commit 할 때에 메세지를 잘 작성해 놔야 될 것 같습니다! ![ --hard 와 -force는 남용하지 않도록 주의..!! 사실 이러한 경우 빼면 정말 쓰면 안된다. ]!
+```
+git reset --hard <full_hash_of_commit_to_reset_to>
+git push --force
+```
